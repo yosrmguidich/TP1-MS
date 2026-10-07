@@ -2,56 +2,12 @@
 
 ## 1. Présentation du TP
 
-## 2. Environnement de travail
+Ce TP a pour objectif d'étudier le couplage faible,
+l'injection de dépendances et le principe d'Inversion de Contrôle (IoC).
 
-## 3. Activité 1-1 : Injection statique
+Nous avons réalisé quatre activités :
 
-### Objectif
-
-### Implémentation
-
-### Explication
-
-### Résultat
-
-### Capture d'écran
-
-## 4. Activité 1-2 : Injection dynamique
-
-### Objectif
-
-### Implémentation
-
-### Explication
-
-### Résultat
-
-### Capture d'écran
-
-## 5. Activité 1-3 : Spring XML
-
-### Objectif
-
-### Implémentation
-
-### Explication
-
-### Résultat
-
-### Capture d'écran
-
-## 6. Activité 1-4 : Spring Annotations
-
-### Objectif
-
-### Implémentation
-
-### Explication
-
-### Résultat
-
-### Capture d'écran
-
-## 7. Comparaison des solutions
-
-## 8. Conclusion
+- Injection de dépendances par instanciation statique
+- Injection de dépendances par instanciation dynamique
+- Injection de dépendances avec Spring et XML
+- Injection de dépendances avec Spring et annotations
