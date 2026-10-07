@@ -68,5 +68,5 @@ Le résultat obtenu est :
 
 ## Capture d'écran
 
-![Résultat activité 1-2](images/activite1-2(1)png)
-![](images/activite1-2(2)png)
+![Résultat activité 1-2](images/activite1-2(1).png)
+![](images/activite1-2(2).png)
