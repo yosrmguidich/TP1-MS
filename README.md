@@ -35,3 +35,6 @@ L'injection de dépendances est réalisée avec la méthode setDao().
 Le programme retourne :
 
 21.0
+### Capture d'écran
+
+![Résultat activité 1-1](images/activite1-1.png)
