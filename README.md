@@ -38,3 +38,35 @@ Le programme retourne :
 ### Capture d'écran
 
 ![Résultat activité 1-1](images/activite1-1.png)
+# 3. Activité 1-2 : Injection de dépendances par instanciation dynamique
+
+## Objectif
+
+L'objectif est de réaliser une injection de dépendances
+par instanciation dynamique à partir d'un fichier de configuration.
+
+## Configuration
+
+Le fichier config.txt contient :
+
+    dao.DaoIMP
+    metier.MetierIMP
+
+## Implémentation
+
+Les noms des classes sont lus depuis config.txt.
+Les classes sont ensuite chargées dynamiquement avec Class.forName()
+et les objets sont créés par réflexion.
+
+L'injection de setDao() est également réalisée dynamiquement.
+
+## Résultat
+
+Le résultat obtenu est :
+
+21.0
+
+## Capture d'écran
+
+![Résultat activité 1-2](images/activite1-2(1)png)
+![](images/activite1-2(2)png)
