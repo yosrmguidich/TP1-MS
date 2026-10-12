@@ -394,7 +394,7 @@ Résultat = 21.0
 
 ### 4.8. Captures d’écran
 
-![Configuration Spring XML](images/activite1-3(2).png)
+![Configuration Spring XML](images/activite1-3(3).png)
 
 *Figure 5 : Configuration XML et injection des dépendances avec Spring.*
 
