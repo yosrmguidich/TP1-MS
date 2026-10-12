@@ -87,60 +87,146 @@ Cette configuration permet de créer un projet Maven prêt à accueillir les dif
 
 ### 2.1. Objectif
 
-L'objectif de cette activité est d'explorer le couplage faible en utilisant l'injection de dépendances par instanciation statique.
+L’objectif de cette activité est de comprendre le principe de l’injection de dépendances (*Dependency Injection*) et de découvrir comment le couplage faible peut être mis en œuvre en Java.
 
 ### 2.2. Implémentation
 
-Nous avons créé les éléments suivants :
+Pour réaliser cette activité, nous avons créé cinq éléments répartis dans trois packages : `dao`, `metier` et `presentation`.
 
-- `IDao` : interface définissant la méthode `getValue()`.
-- `DaoIMP` : classe qui implémente `IDao` et retourne la valeur `3`.
-- `IMetier` : interface définissant la méthode `calcul()`.
-- `MetierIMP` : classe qui implémente `IMetier` et effectue le calcul métier.
-- `PresentationStatique` : classe principale qui crée les objets et réalise l'injection de dépendances.
+#### Étape 1 : Création de l’interface `IDao` (package `dao`)
 
-La classe `MetierIMP` possède une référence de type `IDao`. La dépendance est injectée à l'aide de la méthode `setDao()`.
+L’interface `IDao` définit la méthode `getValue()`, qui permet de récupérer une valeur depuis la couche d’accès aux données.
 
-Dans `PresentationStatique`, les objets sont créés explicitement avec `new`, puis la dépendance est injectée dans l'objet métier.
+```java
+package dao;
+
+public interface IDao {
+    double getValue();
+}
+```
+
+#### Étape 2 : Création de la classe `DaoIMP` (package `dao`)
+
+La classe `DaoIMP` implémente l’interface `IDao`. Sa méthode `getValue()` retourne la valeur `3`, simulant ainsi un accès aux données.
+
+```java
+package dao;
+
+public class DaoIMP implements IDao {
+
+    @Override
+    public double getValue() {
+        return 3; // Simulation d'un accès aux données
+    }
+}
+```
+
+#### Étape 3 : Création de l’interface `IMetier` (package `metier`)
+
+L’interface `IMetier` définit la méthode `calcul()`, chargée d’effectuer le traitement métier.
+
+```java
+package metier;
+
+public interface IMetier {
+    double calcul();
+}
+```
+
+#### Étape 4 : Création de la classe `MetierIMP` (package `metier`)
+
+La classe `MetierIMP` implémente l’interface `IMetier`. Elle possède une référence de type `IDao`, utilisée pour récupérer la valeur nécessaire au calcul.
+
+La méthode `setDao()` permet d’injecter la dépendance, tandis que la méthode `calcul()` multiplie la valeur récupérée par `7`.
+
+```java
+package metier;
+
+import dao.IDao;
+
+public class MetierIMP implements IMetier {
+
+    private IDao dao;
+
+    @Override
+    public double calcul() {
+        return dao.getValue() * 7;
+    }
+
+    public void setDao(IDao dao) {
+        this.dao = dao;
+    }
+}
+```
+
+#### Étape 5 : Création de la classe `PresentationStatique` (package `presentation`)
+
+La classe `PresentationStatique` constitue le point d’entrée de l’application. Elle crée les objets DAO et métier à l’aide de `new`, injecte la dépendance avec `setDao()`, puis affiche le résultat du calcul.
+
+```java
+package presentation;
+
+import dao.DaoIMP;
+import metier.MetierIMP;
+
+public class PresentationStatique {
+
+    public static void main(String[] args) {
+
+        DaoIMP dao = new DaoIMP();
+
+        MetierIMP metier = new MetierIMP();
+        metier.setDao(dao);
+
+        System.out.println("Résultat = " + metier.calcul());
+    }
+}
+```
 
 ### 2.3. Comment cette solution illustre-t-elle le couplage faible ?
 
-Le couplage faible est obtenu grâce à l'utilisation de l'interface `IDao`.
+Le couplage faible est obtenu grâce à l’utilisation de l’interface `IDao`.
 
-La classe `MetierIMP` dépend de l'interface `IDao` et non directement de la classe concrète `DaoIMP`. Il est donc possible de remplacer `DaoIMP` par une autre implémentation de `IDao` sans modifier la logique métier, à condition que cette implémentation respecte le même contrat.
+La classe `MetierIMP` dépend de l’interface `IDao` et non directement de la classe concrète `DaoIMP`. Il est donc possible de remplacer `DaoIMP` par une autre implémentation de `IDao` sans modifier la logique métier, à condition de respecter le même contrat.
 
-Cependant, la classe de présentation reste responsable de la création des objets et du choix de l'implémentation utilisée.
+Cependant, la classe `PresentationStatique` reste responsable de la création des objets et du choix de l’implémentation utilisée.
 
-### 2.4. Le principe d'Inversion de Contrôle est-il respecté ?
+### 2.4. Le principe d’Inversion de Contrôle est-il respecté ?
 
-Le principe d'IoC n'est que partiellement appliqué.
+Le principe d’Inversion de Contrôle (*IoC*) est partiellement appliqué.
 
-L'injection de dépendances permet de séparer la création de la dépendance de son utilisation dans la classe métier. Toutefois, la classe `PresentationStatique` conserve le contrôle de la création des objets grâce aux instructions `new`.
+L’injection de dépendances permet de fournir la dépendance DAO à la classe métier depuis l’extérieur. Toutefois, la classe `PresentationStatique` conserve le contrôle de la création des objets grâce aux instructions `new`.
 
-La création et l'assemblage des objets ne sont donc pas confiés à un conteneur externe.
+La création et l’assemblage des objets ne sont donc pas confiés à un conteneur IoC externe.
 
 ### 2.5. Que faudrait-il modifier pour éviter que la présentation contrôle directement la création des objets ?
 
-Il faudrait externaliser la configuration et la création des objets.
+Il faudrait externaliser davantage la configuration et la création des objets.
 
 Plusieurs solutions sont possibles :
 
 - Lire les noms des classes depuis un fichier de configuration et utiliser la réflexion Java.
-- Utiliser un conteneur IoC comme celui de Spring pour créer les objets et injecter leurs dépendances automatiquement.
+- Utiliser un conteneur IoC comme celui de Spring pour créer les objets et injecter automatiquement leurs dépendances.
 
 Ces solutions sont étudiées dans les activités suivantes.
 
 ### 2.6. Résultat obtenu
 
-L'exécution de `PresentationStatique` affiche :
+Après l’exécution de `PresentationStatique`, le programme affiche le résultat suivant :
 
 ```text
-21.0
+Résultat = 21.0
 ```
 
-### 2.7. Capture d'écran
+Ce résultat correspond au calcul suivant :
+
+**Valeur DAO × 7 = 3 × 7 = 21.0**
+
+### 2.7. Capture d’écran
 
 ![Résultat de l'activité 1-1](images/activite1-1.png)
+
+*Figure 3 : Résultat de l’exécution de la classe `PresentationStatique`.*
 
 ---
 
