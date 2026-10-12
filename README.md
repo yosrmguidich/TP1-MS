@@ -498,7 +498,7 @@ L'exécution de `PresentationAvecAnnotation` affiche :
 
 ### 5.8. Capture d'écran
 
-![Résultat de l'activité 1-4](images/activite1-4.png)
+![Résultat de l'activité 1-4](images/activite1-4(3).png)
 
 *Figure 6 : Résultat de l'exécution de la classe `PresentationAvecAnnotation`.*
 
