@@ -70,3 +70,31 @@ Le résultat obtenu est :
 
 ![Résultat activité 1-2](images/activite1-2(1).png)
 ![](images/activite1-2(2).png)
+# 4. Activité 1-3 : Injection avec Spring XML
+
+## Objectif
+
+L'objectif est d'utiliser le framework Spring
+pour gérer automatiquement les dépendances à partir
+d'un fichier de configuration XML.
+
+## Configuration
+
+Le fichier config.xml définit les beans DaoIMP et MetierIMP
+ainsi que la dépendance entre eux.
+
+## Fonctionnement
+
+Le conteneur Spring lit le fichier config.xml,
+crée les objets et injecte automatiquement DaoIMP
+dans MetierIMP.
+
+## Résultat
+
+Le résultat obtenu est :
+
+21.0
+
+## Capture d'écran
+
+![Résultat activité 1-3](images/activite1-3.png)
