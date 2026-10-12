@@ -303,9 +303,11 @@ L'exécution de `PresentationDynamique` affiche :
 
 ### 3.8. Captures d'écran
 
-![Configuration dynamique](images/activite1-2(1).png)
+![Configuration dynamique](images/activite1-2(2).png)
+*Figure 4 : Résultat de l’exécution de la classe `PresentationStatique`.*
 
-![Exécution de l'activité 1-2](images/activite1-2(2).png)
+![Exécution de l'activité 1-2](images/activite1-2(1).png)
+*Figure 5 : contenu du le fichier `config.xml`.*
 
 ---
 
