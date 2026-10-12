@@ -312,88 +312,92 @@ L'exécution de `PresentationDynamique` affiche :
 
 ### 4.1. Objectif
 
-L'objectif est d'utiliser le framework Spring pour gérer les dépendances à partir d'un fichier de configuration XML.
+L’objectif de cette activité est d’utiliser le framework Spring pour gérer les dépendances à partir d’un fichier de configuration XML, sans créer manuellement les objets dans la classe de présentation.
 
 ### 4.2. Configuration XML
 
-Nous avons créé le fichier `config.xml` dans le répertoire `src/main/resources`.
+Nous avons créé le fichier `config.xml` dans le répertoire `src/main/resources`. Il permet de déclarer les beans et de définir leurs relations.
 
-Ce fichier définit les deux beans et la relation entre eux :
-
-- Le bean `dao` représente l'implémentation `DaoIMP`.
-- Le bean `metier` représente l'implémentation `MetierIMP`.
+- Le bean `dao` représente l’implémentation `DaoIMP`.
+- Le bean `metier` représente l’implémentation `MetierIMP`.
 - La propriété `dao` du bean `metier` référence le bean `dao`.
 
-La dépendance est ainsi configurée à l'extérieur des classes Java.
+#### Code du fichier `config.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dao" class="dao.DaoIMP"/>
+
+    <bean id="metier" class="metier.MetierIMP">
+        <property name="dao" ref="dao"/>
+    </bean>
+
+</beans>
+```
+
+La propriété `name="dao"` correspond à la méthode `setDao()` de la classe `MetierIMP`. L’attribut `ref="dao"` indique à Spring d’injecter le bean DAO dans le bean métier.
 
 ### 4.3. Configuration Maven
 
 Les dépendances Spring nécessaires ont été ajoutées au fichier `pom.xml` :
 
-- `spring-core`
-- `spring-beans`
-- `spring-context`
-
-Ces bibliothèques permettent notamment d'utiliser le conteneur Spring, de gérer les beans et de charger le contexte de l'application.
+- `spring-core` : fournit les fonctionnalités fondamentales de Spring.
+- `spring-beans` : permet de gérer les beans et leurs dépendances.
+- `spring-context` : permet de charger et d’utiliser le contexte Spring.
 
 ### 4.4. Fonctionnement
 
-Nous avons créé la classe `PresentationAvecSpring`.
-
-Elle charge le contexte Spring à partir de `config.xml`, récupère le bean métier et exécute sa méthode `calcul()`.
+Nous avons créé la classe `PresentationAvecSpring`. Elle charge le contexte Spring à partir de `config.xml`, récupère le bean métier et exécute sa méthode `calcul()`.
 
 Le conteneur Spring se charge de :
 
-1. Lire la configuration XML.
+1. Lire le fichier de configuration XML.
 2. Créer les beans déclarés.
 3. Injecter la dépendance DAO dans le bean métier.
-4. Fournir l'objet métier à la classe de présentation.
+4. Fournir l’objet métier à la classe de présentation.
 
-La classe de présentation n'a donc plus besoin de créer manuellement les objets DAO et métier.
+Ainsi, la création des objets et l’injection de leurs dépendances sont gérées par Spring.
 
-### 4.5. Comparaison avec l'activité 1-2
+### 4.5. Comparaison avec l’activité 1-2
 
-Dans l'activité 1-2, nous avons utilisé la réflexion Java pour créer les objets et réaliser l'injection de dépendances. Nous avons dû écrire nous-mêmes le code de lecture de la configuration et d'assemblage des objets.
+Dans l’activité 1-2, nous avons utilisé la réflexion Java (`Class.forName()`) pour créer les objets et injecter les dépendances manuellement.
 
-Dans cette activité, Spring prend en charge ces opérations à travers son conteneur IoC. La configuration XML décrit les objets à créer et leurs relations.
+Dans cette activité, Spring prend en charge ces opérations à travers son conteneur IoC. Les beans et leurs relations sont définis dans `config.xml`, ce qui réduit le code technique nécessaire dans la classe de présentation.
 
-Cette solution facilite la gestion des dépendances et réduit la quantité de code technique à écrire.
-
-### 4.6. Différence entre création manuelle, réflexion et conteneur Spring
+### 4.6. Différence entre les trois approches
 
 **1. Création manuelle des objets**
 
-Le programmeur crée directement les objets avec `new` et associe les dépendances manuellement.
+Le programmeur utilise `new` pour créer les objets et injecte manuellement les dépendances.
 
-Cette solution est simple, mais la classe de présentation doit connaître les implémentations concrètes.
+**2. Création par réflexion Java**
 
-**2. Création par réflexion avec `Class.forName()`**
-
-Les noms des classes sont lus depuis une configuration, puis les objets sont créés dynamiquement.
-
-Cette solution rend le choix des implémentations plus flexible, mais le programmeur doit toujours gérer la création et l'injection des objets.
+Les noms des classes sont lus depuis un fichier de configuration, puis les objets sont créés dynamiquement. La création et l’injection restent gérées par le programmeur.
 
 **3. Création par le conteneur Spring**
 
-Le conteneur Spring crée les objets, appelés beans, et gère leurs dépendances à partir de la configuration.
-
-La classe de présentation récupère directement le bean dont elle a besoin. La gestion des objets est donc confiée au conteneur.
+Spring crée les beans et injecte leurs dépendances à partir de la configuration XML. La gestion des objets est ainsi confiée au conteneur IoC.
 
 ### 4.7. Résultat obtenu
 
-L'exécution de `PresentationAvecSpring` affiche :
+L’exécution de `PresentationAvecSpring` affiche :
 
 ```text
-21.0
+Résultat = 21.0
 ```
 
-### 4.8. Captures d'écran
+### 4.8. Captures d’écran
 
 ![Configuration Spring XML](images/activite1-3.png)
 
-![Exécution de l'activité 1-3](images/activite1-3(2).png)
+*Figure 5 : Configuration XML et injection des dépendances avec Spring.*
 
----
 
 ## 5. Activité 1-4 — Injection de dépendances avec Spring et annotations
 
