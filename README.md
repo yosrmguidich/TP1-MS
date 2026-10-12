@@ -23,24 +23,7 @@ Les objectifs sont les suivants :
 - **Gestion du projet :** Maven
 - **Framework :** Spring Framework
 - **Configuration :** fichier `config.txt`, fichier `config.xml` et annotations
-  
-### Vérification du JDK
 
-Avant de commencer le TP, nous avons vérifié l'installation du JDK 17 dans PowerShell.
-Les commandes suivantes ont été exécutées :
-
-java -version
-javac -version
-
-java -version permet de vérifier la version de l'environnement d'exécution Java.
-
-javac -version permet de vérifier la version du compilateur Java.
-
-Les commandes java -version et javac -version affichent la version 17.0.20.1. La variable JAVA_HOME pointe vers le répertoire du JDK.
-
-Cette vérification confirme que l'environnement Java nécessaire à la réalisation du TP est disponible.
-![](images/java.png)
-Figure 1 : Vérification de java -version, javac -version et de la variable JAVA_HOME dans PowerShell.
 ### Présentation de l'application
 
 L'application est organisée en trois packages :
@@ -56,6 +39,49 @@ Dans notre implémentation, `DaoIMP.getValue()` retourne `3`. Le résultat atten
 **Résultat attendu :** `3 × 7 = 21.0`
 
 ---
+
+### 2. Vérification du JDK
+
+Avant de commencer le TP, nous avons vérifié l’installation et la configuration du **JDK 17** dans PowerShell en exécutant les commandes suivantes :
+
+```powershell
+java -version
+javac -version
+```
+
+- `java -version` permet de vérifier la version de l’environnement d’exécution Java.
+- `javac -version` permet de vérifier la version du compilateur Java.
+
+Les deux commandes affichent la version **17.0.20.1**. Nous avons également vérifié que la variable d’environnement `JAVA_HOME` pointe vers le répertoire d’installation du JDK.
+
+Cette vérification confirme que l’environnement Java nécessaire à la réalisation du TP est correctement configuré.
+
+![Vérification du JDK 17](images/java.png)
+
+*Figure 1 : Vérification des versions de Java et du compilateur, ainsi que de la variable `JAVA_HOME` dans PowerShell.*
+
+---
+
+### 3. Création du projet Maven
+
+Le projet **TP1-MS** a été créé avec **IntelliJ IDEA**, en utilisant Maven comme système de gestion et de construction du projet.
+
+Les étapes de création sont les suivantes :
+
+1. Sélectionner **New Project** dans IntelliJ IDEA.
+2. Choisir **Java** comme langage de programmation.
+3. Sélectionner **Maven** comme système de build.
+4. Choisir **JDK 17** comme version du JDK.
+5. Définir le nom du projet : `TP1-MS`.
+6. Renseigner les paramètres du projet :
+   - **GroupId :** `org.example`
+   - **ArtifactId :** `TP1`
+
+Cette configuration permet de créer un projet Maven prêt à accueillir les différentes classes Java nécessaires aux activités du TP.
+
+![Création du projet Maven](images/create.png)
+
+*Figure 2 : Création du projet Maven `TP1-MS` dans IntelliJ IDEA avec JDK 17, GroupId `org.example` et ArtifactId `TP1`.*
 
 ## 2. Activité 1-1 — Injection de dépendances par instanciation statique
 
