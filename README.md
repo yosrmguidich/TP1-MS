@@ -403,35 +403,72 @@ Résultat = 21.0
 
 ### 5.1. Objectif
 
-L'objectif est de découvrir les annotations Spring permettant de déclarer les composants et de gérer automatiquement l'injection de dépendances.
+L'objectif est de découvrir les annotations Spring permettant de déclarer les composants et de gérer automatiquement l'injection de dépendances, sans avoir besoin de déclarer chaque bean dans un fichier XML.
 
-### 5.2. Annotations utilisées
+### 5.2. Implémentation avec les annotations Spring
 
-**`@Repository`**
+#### Étape 1 : Classe `DaoIMP`
 
-Cette annotation est utilisée sur la classe `DaoIMP` pour indiquer qu'elle représente un composant de la couche d'accès aux données.
+La classe `DaoIMP` implémente l'interface `IDao`. L'annotation `@Repository` indique à Spring que cette classe est un composant de la couche d'accès aux données.
 
-**`@Service`**
+```java
+package dao;
 
-Cette annotation est utilisée sur la classe `MetierIMP` pour identifier le composant de la couche métier.
+import org.springframework.stereotype.Repository;
 
-**`@Autowired`**
+@Repository
+public class DaoIMP implements IDao {
 
-Cette annotation est utilisée sur la dépendance `IDao` de `MetierIMP`. Elle permet à Spring de rechercher un bean compatible et de l'injecter automatiquement.
+    @Override
+    public double getValue() {
+        return 3;
+    }
+}
+```
 
-### 5.3. Fonctionnement
+#### Étape 2 : Classe `MetierIMP`
+
+La classe `MetierIMP` implémente l'interface `IMetier`. L'annotation `@Service` identifie le composant métier, tandis que `@Autowired` permet à Spring d'injecter automatiquement une implémentation de `IDao`.
+
+```java
+package metier;
+
+import dao.IDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MetierIMP implements IMetier {
+
+    @Autowired
+    private IDao dao;
+
+    @Override
+    public double calcul() {
+        return dao.getValue() * 7;
+    }
+}
+```
+
+**Remarque :** avec cette version, l'injection se fait directement sur l'attribut `dao`. Il n'est donc pas nécessaire d'appeler manuellement `setDao()`.
+
+### 5.3. Annotations utilisées
+
+- **`@Repository`** : déclare `DaoIMP` comme composant de la couche d'accès aux données.
+- **`@Service`** : déclare `MetierIMP` comme composant de la couche métier.
+- **`@Autowired`** : demande à Spring d'injecter automatiquement un bean compatible avec le type `IDao`.
+
+### 5.4. Fonctionnement
 
 Nous avons créé la classe `PresentationAvecAnnotation`.
 
-Le contexte Spring est configuré pour scanner les packages `dao` et `metier`.
-
-Spring détecte les classes annotées, crée les beans correspondants et résout leurs dépendances. L'objet métier reçoit automatiquement une implémentation de `IDao`.
+Le contexte Spring est configuré pour scanner les packages `dao` et `metier`. Spring détecte les classes annotées, crée les beans correspondants et injecte automatiquement le DAO dans le composant métier.
 
 La classe de présentation récupère ensuite le bean métier et exécute la méthode `calcul()`.
 
-Il n'est donc plus nécessaire de déclarer les beans et leur relation dans le fichier `config.xml` pour cette configuration par annotations.
+Il n'est donc pas nécessaire de déclarer les beans et leurs relations dans un fichier `config.xml` pour cette configuration par annotations.
 
-### 5.4. Pourquoi cette solution est-elle plus maintenable que la configuration XML ?
+### 5.5. Pourquoi cette solution est-elle plus maintenable que la configuration XML ?
 
 L'utilisation des annotations présente plusieurs avantages :
 
@@ -441,17 +478,17 @@ L'utilisation des annotations présente plusieurs avantages :
 - L'injection des dépendances est gérée automatiquement par Spring.
 - L'évolution des composants est généralement plus simple lorsque le projet grandit.
 
-Cependant, les annotations ne suppriment pas toute configuration : il faut notamment activer ou configurer le scan des composants et gérer les cas où plusieurs implémentations correspondent à une même interface.
+Cependant, il faut toujours configurer le scan des composants. Si plusieurs implémentations correspondent à la même interface, il faut également préciser laquelle doit être injectée.
 
-### 5.5. En quoi cette activité représente-t-elle une application complète du principe IoC ?
+### 5.6. En quoi cette activité représente-t-elle une application du principe IoC ?
 
 Dans cette activité, la création des objets et la résolution de leurs dépendances sont confiées au conteneur Spring.
 
-La classe de présentation ne crée pas directement les objets DAO et métier. Elle demande au conteneur l'objet métier dont elle a besoin.
+La classe de présentation ne crée pas directement les objets DAO et métier. Elle récupère le bean métier auprès du conteneur.
 
-Le conteneur contrôle donc le cycle de création et l'assemblage des composants. La configuration par annotations constitue ici une application du principe IoC avec injection de dépendances gérée par Spring.
+Le conteneur contrôle donc la création et l'assemblage des composants. Cette approche applique le principe d'inversion de contrôle (IoC) grâce à l'injection de dépendances gérée par Spring.
 
-### 5.6. Résultat obtenu
+### 5.7. Résultat obtenu
 
 L'exécution de `PresentationAvecAnnotation` affiche :
 
@@ -459,11 +496,11 @@ L'exécution de `PresentationAvecAnnotation` affiche :
 21.0
 ```
 
-### 5.7. Capture d'écran
+### 5.8. Capture d'écran
 
-![Résultat de l'activité 1-4](images/activite1-4(3).png)
+![Résultat de l'activité 1-4](images/activite1-4.png)
 
----
+*Figure 6 : Résultat de l'exécution de la classe `PresentationAvecAnnotation`.*
 
 ## 6. Comparaison des quatre approches
 
