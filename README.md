@@ -304,7 +304,7 @@ L'exécution de `PresentationDynamique` affiche :
 ### 3.8. Captures d'écran
 
 ![Exécution de l'activité 1-2](images/activite1-2(1).png)
-*Figure 4 : Résultat de l’exécution de la classe `PresentationAvecSpring`.*
+*Figure 4 : Résultat de l’exécution de la classe `PresentationDynamique`.*
 
 ---
 
