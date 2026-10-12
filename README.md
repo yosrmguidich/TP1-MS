@@ -23,7 +23,24 @@ Les objectifs sont les suivants :
 - **Gestion du projet :** Maven
 - **Framework :** Spring Framework
 - **Configuration :** fichier `config.txt`, fichier `config.xml` et annotations
+  
+### Vérification du JDK
 
+Avant de commencer le TP, nous avons vérifié l'installation du JDK 17 dans PowerShell.
+Les commandes suivantes ont été exécutées :
+
+java -version
+javac -version
+
+java -version permet de vérifier la version de l'environnement d'exécution Java.
+
+javac -version permet de vérifier la version du compilateur Java.
+
+Les commandes java -version et javac -version affichent la version 17.0.20.1. La variable JAVA_HOME pointe vers le répertoire du JDK.
+
+Cette vérification confirme que l'environnement Java nécessaire à la réalisation du TP est disponible.
+![](images/java.png)
+Figure 1 : Vérification de java -version, javac -version et de la variable JAVA_HOME dans PowerShell.
 ### Présentation de l'application
 
 L'application est organisée en trois packages :
